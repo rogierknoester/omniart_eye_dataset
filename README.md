@@ -52,7 +52,7 @@ plt.imshow(np.transpose(vutils.make_grid(images, padding=5, normalize=True), (1,
 plt.show()
 ```
 
-![Sample eyes]('images/sample.png?raw=true')  
+![Sample eyes](images/sample.png?raw=true)  
 
 
 
