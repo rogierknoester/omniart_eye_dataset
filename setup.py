@@ -16,6 +16,6 @@ setuptools.setup(name='omniart_eye_dataset',
                  author_email='knoesterrogier+omniart@gmail.com',
                  license='MIT',
                  packages=setuptools.find_packages(),
-                 package_data={'omniart_eye_dataset': ['datasets/*.tar.xz.*']},
+                 package_data={'omniart_eye_dataset': ['datasets/*.tar.xz.*', 'datasets/*.tar.xz']},
                  install_requires=requirements,
                  zip_safe=False)
