@@ -1,5 +1,7 @@
+import glob
 import os
 from typing import Tuple, Union
+import subprocess
 
 import pandas as pd
 from PIL.Image import Image
@@ -10,6 +12,7 @@ from torchvision.datasets import ImageFolder
 
 class OmniArtEyeDataset(ImageFolder):
     dataset_tar = 'omniart_eye_dataset.tar.xz'
+    dataset_tar_part = 'omniart_eye_dataset.tar.*'
     metadata_tar = 'omniart_metadata.tar.xz'
 
     def __init__(self, transform=None):
@@ -25,12 +28,22 @@ class OmniArtEyeDataset(ImageFolder):
 
     def __data_files_exist(self) -> bool:
         return os.path.isdir(os.path.join(self.root, 'full')) and \
-               os.path.isfile(os.path.join(self.root, 'omniart_eyes_dataset.csv'))
+               os.path.isfile(os.path.join(self.root, 'omniart_metadata.csv'))
 
     def __unpack_datasets(self):
         import tarfile
         print("Unpacking OmniArt eyes dataset...")
-        # extract the datasets (color and full)
+
+        # extract the dataset
+
+        # First join the part files
+        # Part files exist because of file size limits and the lack of an external (permanent) hosting for the files
+        part_files = glob.glob(os.path.join(self.root, self.dataset_tar_part))
+        with open(os.path.join(self.root, self.dataset_tar), 'wb') as dataset_file:
+            for part_file in part_files:
+                with open(part_file, 'rb') as read_file:
+                    dataset_file.write(read_file.read())
+
         with tarfile.open(os.path.join(self.root, self.dataset_tar)) as tar:
             tar.extractall(path=self.root)
         print("Unpacking OmniArt metadata...")
