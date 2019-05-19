@@ -8,14 +8,14 @@ import numpy as np
 import torchvision.utils as vutils
 from torchvision.transforms import transforms
 
-from omniart_eye_dataset import OmniArtEyeDataset
+from omniart_eye_dataset import OmniArtEyeDataset, OA_DATASET_COLOR_25x25, OA_DATASET_FULL
 
 dataset = OmniArtEyeDataset(transform=transforms.Compose([
     transforms.Resize(50),
     transforms.CenterCrop(50),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-]))
+]), dataset_type=OA_DATASET_COLOR_25x25)
 
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=True, num_workers=4)
 

@@ -23,22 +23,27 @@ The following classes are used, and how many of that class exist in the dataset:
 The ``negative`` class exists to be able to classify non-eye images. It contains samples of primarily noise and facial areas, such as closed eyelids.
 
 ###### Example
-The dataset can be used in the following way
+The dataset can be used in the following way. It is possible to specify which (sub)dataset to use. The full dataset, the colour only dataset (excludes the irisless and negative classes), and whether to use all size images or only 25 by 25 and higher resolutions.
 ```python
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
 import torchvision.utils as vutils
 from torchvision.transforms import transforms
 
-from omniart_eye_dataset import OmniArtEyeDataset
+from omniart_eye_dataset import OmniArtEyeDataset, OA_DATASET_COLOR_25x25, OA_DATASET_FULL
 
 dataset = OmniArtEyeDataset(transform=transforms.Compose([
-                               transforms.Resize(50),
-                               transforms.CenterCrop(50),
-                               transforms.ToTensor(),
-                           ]))
-                           
+    transforms.Resize(50),
+    transforms.CenterCrop(50),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+]), dataset_type=OA_DATASET_COLOR_25x25)
+
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=True, num_workers=4)
 
 # Take 64 random entries
@@ -59,7 +64,7 @@ plt.show()
 
 
 ### Related
-This dataset has already been used to train a [classifier](https://github.com/rogierknoester/omniart_eye_classifier) and painted eye generator.
+This dataset has already been used to train a [classifier](https://github.com/rogierknoester/omniart_eye_classifier) and [painted eye generator](https://github.com/rogierknoester/omniart_eye_generator).
 
 
 
